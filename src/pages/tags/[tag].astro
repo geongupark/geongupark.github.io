@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PostItem from '../../components/PostItem.astro';
+import { getPosts, groupByTag } from '../../utils/posts';
+import type { Post } from '../../utils/posts';
+
+export async function getStaticPaths() {
+  const groups = groupByTag(await getPosts());
+  return groups.map((group) => ({
+    params: { tag: group.slug },
+    props: { name: group.name, posts: group.posts },
+  }));
+}
+
+interface Props { name: string; posts: Post[] }
+const { name, posts } = Astro.props;
+---
+
+<BaseLayout title={`#${name} — Tag`} description={`${name} 태그의 글 ${posts.length}편`}>
+  <div class="page">
+    <PageHeader eyebrow="Tag" title={`#${name}`} description={`${posts.length}편`} />
+    {posts.map((post) => <PostItem post={post} />)}
+    <p class="back"><a href="/tags">← 모든 태그</a></p>
+  </div>
+</BaseLayout>
+
+<style>
+  .back { margin-top: 2.5rem; font-size: var(--text-sm); }
+</style>

@@ -1,0 +1,25 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  /** 마크다운 페이지에서 frontmatter 로 넘어오는 값 */
+  frontmatter?: { title: string; description?: string; eyebrow?: string };
+}
+const fm = Astro.props.frontmatter;
+const title = fm?.title ?? Astro.props.title;
+const description = fm?.description ?? Astro.props.description;
+const eyebrow = fm?.eyebrow ?? Astro.props.eyebrow;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page">
+    <PageHeader eyebrow={eyebrow} title={title} description={description} />
+    <div class="prose" data-pagefind-body>
+      <slot />
+    </div>
+  </div>
+</BaseLayout>

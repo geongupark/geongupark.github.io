@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from '../../../components/PageHeader.astro';
+import PostItem from '../../../components/PostItem.astro';
+import Pagination from '../../../components/Pagination.astro';
+import { getPosts } from '../../../utils/posts';
+import type { Post } from '../../../utils/posts';
+import { SITE } from '../../../config';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const size = SITE.postsPerPage;
+  const totalPages = Math.max(1, Math.ceil(posts.length / size));
+
+  // 1페이지는 /posts 가 담당하므로 2페이지부터 생성합니다.
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
+    const pageNumber = index + 2;
+    return {
+      params: { page: String(pageNumber) },
+      props: {
+        items: posts.slice((pageNumber - 1) * size, pageNumber * size),
+        current: pageNumber,
+        totalPages,
+        totalPosts: posts.length,
+      },
+    };
+  });
+}
+
+interface Props { items: Post[]; current: number; totalPages: number; totalPosts: number }
+const { items, current, totalPages, totalPosts } = Astro.props;
+---
+
+<BaseLayout title={`Posts — ${current}페이지`} description={`${SITE.title}의 글 ${totalPosts}편`} noindex>
+  <div class="page">
+    <PageHeader eyebrow="Archive" title="Posts" description={`전체 ${totalPosts}편 · ${current}/${totalPages} 페이지`} />
+    {items.map((post) => <PostItem post={post} />)}
+    <Pagination
+      current={current}
+      total={totalPages}
+      prev={current === 2 ? '/posts' : `/posts/page/${current - 1}`}
+      next={current < totalPages ? `/posts/page/${current + 1}` : undefined}
+    />
+  </div>
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PostItem from '../../components/PostItem.astro';
+import { getPosts, groupByCategory } from '../../utils/posts';
+import type { Post } from '../../utils/posts';
+
+export async function getStaticPaths() {
+  const groups = groupByCategory(await getPosts());
+  return groups.map((group) => ({
+    params: { category: group.slug },
+    props: { name: group.name, posts: group.posts },
+  }));
+}
+
+interface Props { name: string; posts: Post[] }
+const { name, posts } = Astro.props;
+---
+
+<BaseLayout title={`${name} — Category`} description={`${name} 카테고리의 글 ${posts.length}편`}>
+  <div class="page">
+    <PageHeader eyebrow="Category" title={name} description={`${posts.length}편`} />
+    {posts.map((post) => <PostItem post={post} />)}
+    <p class="back"><a href="/categories">← 모든 카테고리</a></p>
+  </div>
+</BaseLayout>
+
+<style>
+  .back { margin-top: 2.5rem; font-size: var(--text-sm); }
+</style>

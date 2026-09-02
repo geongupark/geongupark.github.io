@@ -1,0 +1,32 @@
+---
+interface Props {
+  prev?: string | undefined;
+  next?: string | undefined;
+  current: number;
+  total: number;
+}
+const { prev, next, current, total } = Astro.props;
+---
+
+{total > 1 && (
+  <nav class="pagination" aria-label="페이지 이동">
+    {prev ? <a href={prev} rel="prev">← 이전</a> : <span aria-hidden="true">← 이전</span>}
+    <span class="mono count">{current} / {total}</span>
+    {next ? <a href={next} rel="next">다음 →</a> : <span aria-hidden="true">다음 →</span>}
+  </nav>
+)}
+
+<style>
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: var(--rule);
+    font-size: var(--text-sm);
+  }
+  span[aria-hidden] { color: var(--fg-faint); opacity: 0.45; }
+  .count { color: var(--fg-faint); font-size: var(--text-xs); }
+</style>

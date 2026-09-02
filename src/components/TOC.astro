@@ -1,0 +1,60 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props { headings: MarkdownHeading[] }
+const headings = Astro.props.headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{headings.length > 1 && (
+  <nav class="toc" aria-label="목차">
+    <p class="eyebrow">Contents</p>
+    <ol>
+      {headings.map((h) => (
+        <li data-depth={h.depth}>
+          <a class="plain" href={`#${h.slug}`}>{h.text}</a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}
+
+<style>
+  .toc { font-size: var(--text-sm); line-height: 1.5; }
+  .eyebrow { margin-bottom: 0.75rem; }
+  ol { list-style: none; padding: 0; border-left: var(--rule); }
+  li[data-depth='3'] { padding-left: 0.8rem; }
+  a {
+    display: block;
+    padding: 0.3rem 0 0.3rem 0.8rem;
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    color: var(--fg-faint);
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  a:hover { color: var(--fg); }
+  a[aria-current='true'] { color: var(--fg); border-left-color: var(--line-strong); }
+</style>
+
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.toc a')];
+  if (links.length) {
+    const targets = links
+      .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    const setActive = (id: string) => {
+      for (const link of links) {
+        link.setAttribute('aria-current', decodeURIComponent(link.hash.slice(1)) === id ? 'true' : 'false');
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length) setActive(visible[0]!.target.id);
+      },
+      { rootMargin: '-72px 0px -70% 0px', threshold: 0 },
+    );
+    targets.forEach((target) => observer.observe(target));
+  }
+</script>

@@ -1,0 +1,35 @@
+---
+import { SITE, SOCIAL } from '../config';
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="page inner">
+    <p class="mono">© {year} {SITE.author}</p>
+    {SOCIAL.length > 0 && (
+      <nav aria-label="외부 링크">
+        {SOCIAL.map(({ label, href }) => (
+          <a href={href} rel={href.startsWith('http') ? 'me noopener' : undefined}>{label}</a>
+        ))}
+      </nav>
+    )}
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: var(--rule);
+    margin-top: 5rem;
+    padding-block: 2rem 3rem;
+    font-size: var(--text-sm);
+    color: var(--fg-faint);
+  }
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  nav { display: flex; gap: 1rem; }
+</style>
