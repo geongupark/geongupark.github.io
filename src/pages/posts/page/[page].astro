@@ -12,7 +12,7 @@ export async function getStaticPaths() {
   const size = SITE.postsPerPage;
   const totalPages = Math.max(1, Math.ceil(posts.length / size));
 
-  // 1페이지는 /posts 가 담당하므로 2페이지부터 생성합니다.
+  // /posts is page 1, so start generating from page 2.
   return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
     const pageNumber = index + 2;
     return {
@@ -31,9 +31,9 @@ interface Props { items: Post[]; current: number; totalPages: number; totalPosts
 const { items, current, totalPages, totalPosts } = Astro.props;
 ---
 
-<BaseLayout title={`Posts — ${current}페이지`} description={`${SITE.title}의 글 ${totalPosts}편`} noindex>
+<BaseLayout title={`Posts — page ${current}`} description={`All ${totalPosts} posts on ${SITE.title}`} noindex>
   <div class="page">
-    <PageHeader eyebrow="Archive" title="Posts" description={`전체 ${totalPosts}편 · ${current}/${totalPages} 페이지`} />
+    <PageHeader eyebrow="Archive" title="Posts" description={`${totalPosts} posts · page ${current} of ${totalPages}`} />
     {items.map((post) => <PostItem post={post} />)}
     <Pagination
       current={current}

@@ -17,7 +17,7 @@ const categories = groupByCategory(posts).slice(0, 8);
     </section>
 
     {categories.length > 0 && (
-      <nav class="cats" aria-label="카테고리 바로가기">
+      <nav class="cats" aria-label="Categories">
         {categories.map((cat) => (
           <a class="plain" href={`/categories/${cat.slug}`}>
             {cat.name}<span class="mono n">{cat.posts.length}</span>
@@ -26,11 +26,11 @@ const categories = groupByCategory(posts).slice(0, 8);
       </nav>
     )}
 
-    <section aria-label="최근 글">
+    <section aria-label="Recent posts">
       <p class="eyebrow section-label">Recent</p>
       {recent.length === 0 ? (
         <p class="empty">
-          아직 글이 없습니다. <code>src/content/blog/</code> 에 마크다운 파일을 추가하면 여기에 나타납니다.
+          No posts yet. Drop a markdown file into <code>src/content/blog/</code> and it shows up here.
         </p>
       ) : (
         recent.map((post) => <PostItem post={post} />)
@@ -38,7 +38,7 @@ const categories = groupByCategory(posts).slice(0, 8);
     </section>
 
     {posts.length > recent.length && (
-      <p class="more"><a href="/posts">글 전체 보기 ({posts.length}) →</a></p>
+      <p class="more"><a href="/posts">All {posts.length} posts →</a></p>
     )}
   </div>
 </BaseLayout>

@@ -6,9 +6,9 @@ import { getPosts, groupByTag } from '../../utils/posts';
 const tags = groupByTag(await getPosts());
 ---
 
-<BaseLayout title="Tags" description="태그로 훑어보기">
+<BaseLayout title="Tags" description="Browse by tag">
   <div class="page">
-    <PageHeader eyebrow="Index" title="Tags" description={`${tags.length}개 태그`} />
+    <PageHeader eyebrow="Index" title="Tags" description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"}`} />
     <ul class="cloud">
       {tags.map((tag) => (
         <li>
@@ -16,7 +16,7 @@ const tags = groupByTag(await getPosts());
         </li>
       ))}
     </ul>
-    {tags.length === 0 && <p class="muted">아직 태그가 없습니다.</p>}
+    {tags.length === 0 && <p class="muted">No tags yet.</p>}
   </div>
 </BaseLayout>
 

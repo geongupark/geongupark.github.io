@@ -49,13 +49,13 @@ const { Content, headings } = await render(post);
           <span aria-hidden="true">·</span>
           <a href={`/categories/${slugify(category)}`} data-pagefind-filter="category" data-pagefind-meta="category">{category}</a>
           <span aria-hidden="true">·</span>
-          <span>{readingTime(post.body)}분</span>
+          <span>{readingTime(post.body)} min read</span>
           {draft && <span class="draft">DRAFT</span>}
         </div>
         <h1>{title}</h1>
         <p class="lede">{description}</p>
         {updated && (
-          <p class="updated mono">최종 수정 {formatDate(updated)}</p>
+          <p class="updated mono">Updated {formatDate(updated)}</p>
         )}
       </header>
 
@@ -80,16 +80,16 @@ const { Content, headings } = await render(post);
           </section>
         )}
 
-        <nav class="adjacent" aria-label="이전 다음 글">
+        <nav class="adjacent" aria-label="Adjacent posts">
           {prev ? (
             <a class="plain" href={`/posts/${prev.id}`} rel="prev">
-              <span class="eyebrow">이전 글</span>
+              <span class="eyebrow">Previous</span>
               <span class="t">{prev.data.title}</span>
             </a>
           ) : <span></span>}
           {next && (
             <a class="plain next" href={`/posts/${next.id}`} rel="next">
-              <span class="eyebrow">다음 글</span>
+              <span class="eyebrow">Next</span>
               <span class="t">{next.data.title}</span>
             </a>
           )}
@@ -120,7 +120,7 @@ const { Content, headings } = await render(post);
 </BaseLayout>
 
 <script>
-  // 제목 옆 `#` 앵커. id 는 빌드 때 이미 붙어 있으므로 링크만 얹습니다.
+  // Heading anchors. The ids already exist from the build, so only the link is added.
   for (const heading of document.querySelectorAll<HTMLElement>('.prose :is(h2, h3, h4)[id]')) {
     const anchor = document.createElement('a');
     anchor.className = 'heading-anchor';
@@ -190,7 +190,7 @@ const { Content, headings } = await render(post);
     .adjacent .next { text-align: left; }
   }
 
-  /* 넓은 화면에서만 목차를 본문 옆에 띄웁니다. */
+  /* The table of contents only sits beside the article on wide screens. */
   .rail { display: none; }
   @media (min-width: 78rem) {
     .rail {

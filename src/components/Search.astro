@@ -1,6 +1,6 @@
 ---
 ---
-<button id="search-open" type="button" aria-label="검색 열기">
+<button id="search-open" type="button" aria-label="Open search">
   <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
     <circle cx="10.8" cy="10.8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.6" />
     <path d="m15.5 15.5 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
@@ -9,20 +9,20 @@
   <kbd class="hint">⌘K</kbd>
 </button>
 
-<dialog id="search-dialog" aria-label="사이트 검색">
+<dialog id="search-dialog" aria-label="Site search">
   <div class="field">
     <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
       <circle cx="10.8" cy="10.8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.6" />
       <path d="m15.5 15.5 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
     </svg>
     <input id="search-input" type="search" autocomplete="off" spellcheck="false"
-           placeholder="제목, 본문, 태그 검색" aria-label="검색어" />
+           placeholder="Search titles, content, and tags" aria-label="Search query" />
     <kbd>ESC</kbd>
   </div>
   <div id="search-results" role="listbox" aria-live="polite"></div>
   <footer>
-    <span><kbd>↑</kbd><kbd>↓</kbd> 이동</span>
-    <span><kbd>↵</kbd> 열기</span>
+    <span><kbd>↑</kbd><kbd>↓</kbd> to navigate</span>
+    <span><kbd>↵</kbd> to open</span>
   </footer>
 </dialog>
 
@@ -155,11 +155,11 @@
   let loading: Promise<any> | null = null;
   let cursor = -1;
 
-  // pagefind 번들은 `astro build` 이후 pagefind CLI 가 만들어 냅니다.
-  // 번들러가 이 경로를 해석하려 들면 실패하므로, 브라우저의 import 로 직접 넘깁니다.
+  // The pagefind bundle is produced by the pagefind CLI after `astro build`.
+  // Bundlers cannot resolve that path, so hand the specifier straight to the browser.
   const importModule = new Function('src', 'return import(src)') as (src: string) => Promise<any>;
 
-  /** 검색창을 처음 열 때 한 번만 로드합니다. */
+  /** Loaded once, the first time the dialog opens. */
   function loadEngine() {
     if (loading) return loading;
     loading = (async () => {
@@ -191,17 +191,17 @@
   async function run(query: string) {
     cursor = -1;
     if (!query.trim()) {
-      setMessage('검색어를 입력하세요.');
+      setMessage('Type to search.');
       return;
     }
     engine ??= await loadEngine();
     if (!engine) {
-      setMessage('검색 인덱스를 찾을 수 없습니다. `npm run build` 후 `npm run preview` 에서 동작합니다.');
+      setMessage('Search index not found. Run `npm run build`, then `npm run preview`.');
       return;
     }
     const { results } = await engine.search(query);
     if (!results.length) {
-      setMessage(`"${query}" 에 대한 결과가 없습니다.`);
+      setMessage(`No results for "${query}".`);
       return;
     }
     const data = await Promise.all(results.slice(0, 8).map((r: any) => r.data()));
@@ -210,7 +210,7 @@
         const meta = [d.meta?.category, d.meta?.date].filter(Boolean).map(escapeHtml).join(' · ');
         return `<a href="${d.url}" role="option" aria-selected="false">
           ${meta ? `<div class="r-meta">${meta}</div>` : ''}
-          <div class="r-title">${escapeHtml(d.meta?.title ?? '제목 없음')}</div>
+          <div class="r-title">${escapeHtml(d.meta?.title ?? 'Untitled')}</div>
           <div class="r-excerpt">${d.excerpt}</div>
         </a>`;
       })
@@ -228,7 +228,7 @@
     if (dialog!.open) return;
     dialog!.showModal();
     input!.value = '';
-    setMessage('검색어를 입력하세요.');
+    setMessage('Type to search.');
     input!.focus();
     void loadEngine();
   }

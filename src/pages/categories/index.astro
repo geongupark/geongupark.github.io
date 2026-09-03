@@ -6,9 +6,9 @@ import { formatDate, getPosts, groupByCategory } from '../../utils/posts';
 const categories = groupByCategory(await getPosts());
 ---
 
-<BaseLayout title="Categories" description="주제별로 모아 본 글">
+<BaseLayout title="Categories" description="Posts grouped by subject">
   <div class="page">
-    <PageHeader eyebrow="Index" title="Categories" description={`${categories.length}개 카테고리`} />
+    <PageHeader eyebrow="Index" title="Categories" description={`${categories.length} ${categories.length === 1 ? "category" : "categories"}`} />
     <ul class="list">
       {categories.map((cat) => (
         <li>
@@ -16,11 +16,11 @@ const categories = groupByCategory(await getPosts());
             <span class="name">{cat.name}</span>
             <span class="mono n">{cat.posts.length}</span>
           </a>
-          <p class="latest mono">최근 {formatDate(cat.posts[0]!.data.date)}</p>
+          <p class="latest mono">Latest {formatDate(cat.posts[0]!.data.date)}</p>
         </li>
       ))}
     </ul>
-    {categories.length === 0 && <p class="muted">아직 카테고리가 없습니다.</p>}
+    {categories.length === 0 && <p class="muted">No categories yet.</p>}
   </div>
 </BaseLayout>
 

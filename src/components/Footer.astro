@@ -7,7 +7,7 @@ const year = new Date().getFullYear();
   <div class="page inner">
     <p class="mono">© {year} {SITE.author}</p>
     {SOCIAL.length > 0 && (
-      <nav aria-label="외부 링크">
+      <nav aria-label="Elsewhere">
         {SOCIAL.map(({ label, href }) => (
           <a href={href} rel={href.startsWith('http') ? 'me noopener' : undefined}>{label}</a>
         ))}

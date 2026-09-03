@@ -17,11 +17,11 @@ interface Props { name: string; posts: Post[] }
 const { name, posts } = Astro.props;
 ---
 
-<BaseLayout title={`#${name} — Tag`} description={`${name} 태그의 글 ${posts.length}편`}>
+<BaseLayout title={`#${name} — Tag`} description={`${posts.length} posts tagged ${name}`}>
   <div class="page">
-    <PageHeader eyebrow="Tag" title={`#${name}`} description={`${posts.length}편`} />
+    <PageHeader eyebrow="Tag" title={`#${name}`} description={`${posts.length} ${posts.length === 1 ? "post" : "posts"}`} />
     {posts.map((post) => <PostItem post={post} />)}
-    <p class="back"><a href="/tags">← 모든 태그</a></p>
+    <p class="back"><a href="/tags">← All tags</a></p>
   </div>
 </BaseLayout>
 

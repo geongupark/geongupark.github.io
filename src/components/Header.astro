@@ -11,7 +11,7 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
   <div class="page bar">
     <a class="wordmark plain" href="/">{SITE.wordmark}</a>
 
-    <nav aria-label="주요 메뉴">
+    <nav aria-label="Main">
       {NAV.map(({ label, href }) => (
         <a class="plain" href={href} aria-current={isActive(href) ? 'page' : undefined}>{label}</a>
       ))}
@@ -71,7 +71,7 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 
   .tools { display: flex; align-items: center; gap: 0.4rem; }
 
-  /* 좁은 화면에서는 메뉴를 아랫줄로 내립니다. */
+  /* On narrow screens the menu drops to its own row. */
   @media (max-width: 34rem) {
     .bar {
       height: auto;

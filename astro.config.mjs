@@ -13,10 +13,10 @@ export default defineConfig({
   integrations: [
     expressiveCode({
       themes: ['github-light', 'github-dark'],
-      // OS 미디어 쿼리 대신 우리 `data-theme` 속성을 따르게 합니다.
+      // Follow our own `data-theme` attribute rather than the OS media query.
       themeCssSelector: (theme) => `[data-theme="${theme.type}"]`,
       useDarkModeMediaQuery: false,
-      // 코드 블록도 페이지와 같은 흑백 팔레트를 쓰게 맞춥니다.
+      // Make code blocks use the same black-and-white palette as the page.
       styleOverrides: {
         borderRadius: '0',
         borderWidth: '1px',

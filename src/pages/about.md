@@ -2,21 +2,21 @@
 layout: ../layouts/PageLayout.astro
 title: About
 eyebrow: Page
-description: 이 블로그와 저에 대한 짧은 소개입니다.
+description: A short introduction to this blog and to me.
 ---
 
-안녕하세요. 개발하면서 배운 것들을 정리해 두는 공간입니다.
+Hello. This is where I keep notes on what I learn while building things.
 
-## 무엇을 쓰나요
+## What goes here
 
-- 일하면서 마주친 문제와 그 해결 과정
-- 새로 익힌 도구·언어·아키텍처 정리
-- 다시 찾아볼 만한 삽질 기록
+- Problems I ran into at work, and how they were solved
+- Notes on tools, languages and architectures I picked up
+- Dead ends worth remembering, so I don't walk into them twice
 
-## 연락
+## Elsewhere
 
 - GitHub: [@geongupark](https://github.com/geongupark)
 - RSS: [/rss.xml](/rss.xml)
 
-> 이 페이지는 `src/pages/about.md` 입니다. 같은 폴더에 마크다운 파일을 하나 더 만들면
-> 새 페이지가 됩니다. 메뉴에 노출하려면 `src/config.ts` 의 `NAV` 에 한 줄만 추가하세요.
+> This page is `src/pages/about.md`. Another markdown file in the same folder becomes
+> another page. To show it in the menu, add one line to `NAV` in `src/config.ts`.

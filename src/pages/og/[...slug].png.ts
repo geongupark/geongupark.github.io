@@ -38,7 +38,7 @@ function loadFonts() {
 const truncate = (value: string, max: number) =>
   value.length > max ? `${value.slice(0, max - 1).trimEnd()}…` : value;
 
-/** satori 는 JSX 대신 순수 객체 트리도 받습니다. */
+/** satori accepts a plain object tree, so no JSX setup is needed. */
 const el = (type: string, style: Record<string, unknown>, children: unknown = undefined) => ({
   type,
   props: { style, children },
@@ -94,7 +94,7 @@ export const GET: APIRoute = async ({ props }) => {
         el(
           'div',
           { display: 'flex', marginTop: '24px', fontSize: '28px', lineHeight: 1.5, color: '#666666' },
-          truncate(subtitle ?? '', 76),
+          truncate(subtitle ?? '', 120),
         ),
       ]),
       el('div', { display: 'flex', justifyContent: 'space-between', fontSize: '24px', color: '#101010' }, [

@@ -9,10 +9,10 @@ const { prev, next, current, total } = Astro.props;
 ---
 
 {total > 1 && (
-  <nav class="pagination" aria-label="페이지 이동">
-    {prev ? <a href={prev} rel="prev">← 이전</a> : <span aria-hidden="true">← 이전</span>}
+  <nav class="pagination" aria-label="Pagination">
+    {prev ? <a href={prev} rel="prev">← Newer</a> : <span aria-hidden="true">← Newer</span>}
     <span class="mono count">{current} / {total}</span>
-    {next ? <a href={next} rel="next">다음 →</a> : <span aria-hidden="true">다음 →</span>}
+    {next ? <a href={next} rel="next">Older →</a> : <span aria-hidden="true">Older →</span>}
   </nav>
 )}
 

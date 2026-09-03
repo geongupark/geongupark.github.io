@@ -6,7 +6,7 @@ const headings = Astro.props.headings.filter((h) => h.depth === 2 || h.depth ===
 ---
 
 {headings.length > 1 && (
-  <nav class="toc" aria-label="목차">
+  <nav class="toc" aria-label="Table of contents">
     <p class="eyebrow">Contents</p>
     <ol>
       {headings.map((h) => (

@@ -8,13 +8,13 @@ const blog = defineCollection({
     description: z.string(),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
-    /** 하나만. 새 이름을 적으면 /categories/<이름> 이 자동으로 생깁니다. */
+    /** Exactly one. A name you haven't used before creates /categories/<name>. */
     category: z.string().default('etc'),
-    /** 여러 개. /tags/<이름> 이 자동으로 생깁니다. */
+    /** Any number. Each one creates /tags/<name>. */
     tags: z.array(z.string()).default([]),
-    /** true 면 프로덕션 빌드에서 제외됩니다. */
+    /** Excluded from production builds while true. */
     draft: z.boolean().default(false),
-    /** 연재물 묶음 이름 (선택) */
+    /** Optional name that groups posts into a series. */
     series: z.string().optional(),
   }),
 });

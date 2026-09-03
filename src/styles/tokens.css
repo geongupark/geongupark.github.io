@@ -1,12 +1,13 @@
 /* ─────────────────────────────────────────────
-   디자인 토큰 — 색/타이포/간격을 여기서만 고칩니다.
-   컨셉: 흑백, 액센트 컬러 없음. 강조는 굵기·여백·괘선으로.
+   Design tokens — color, type and spacing are edited only here.
+   The concept: black and white, no accent color. Emphasis comes from
+   weight, whitespace and hairlines.
    ───────────────────────────────────────────── */
 
 :root {
   color-scheme: light;
 
-  /* 색 */
+  /* Color */
   --bg: #ffffff;
   --bg-subtle: #fafafa;
   --fg: #101010;
@@ -18,7 +19,7 @@
   --selection-fg: #ffffff;
   --mark-bg: #ebebeb;
 
-  /* 타이포 */
+  /* Type */
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
     'Segoe UI', system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo,
@@ -37,13 +38,13 @@
   --tracking-tight: -0.021em;
   --tracking-wide: 0.08em;
 
-  /* 레이아웃 */
-  --measure: 42rem;   /* 본문 폭 */
-  --page: 46rem;      /* 페이지 폭 */
+  /* Layout */
+  --measure: 42rem;   /* article width */
+  --page: 46rem;      /* page width */
   --gutter: clamp(1.25rem, 5vw, 2rem);
   --rule: 1px solid var(--line);
 
-  /* 모션 */
+  /* Motion */
   --ease: cubic-bezier(0.2, 0, 0, 1);
   --dur: 150ms;
 }

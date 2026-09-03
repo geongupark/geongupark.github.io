@@ -2,7 +2,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'blog'>;
 
-/** 발행된 글을 최신순으로. dev 에서는 draft 도 함께 보여줍니다. */
+/** Published posts, newest first. Drafts stay visible in dev. */
 export async function getPosts(): Promise<Post[]> {
   const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
   return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -16,7 +16,7 @@ export function slugify(value: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-/** 카테고리별 글 묶음 (글 수 내림차순) */
+/** Posts grouped by category, busiest first. */
 export function groupByCategory(posts: Post[]) {
   const map = new Map<string, Post[]>();
   for (const post of posts) {
@@ -28,7 +28,7 @@ export function groupByCategory(posts: Post[]) {
     .sort((a, b) => b.posts.length - a.posts.length || a.name.localeCompare(b.name));
 }
 
-/** 태그별 글 묶음 (글 수 내림차순) */
+/** Posts grouped by tag, busiest first. */
 export function groupByTag(posts: Post[]) {
   const map = new Map<string, Post[]>();
   for (const post of posts) {
@@ -41,7 +41,7 @@ export function groupByTag(posts: Post[]) {
     .sort((a, b) => b.posts.length - a.posts.length || a.name.localeCompare(b.name));
 }
 
-/** 한글/영문을 함께 고려한 대략적인 읽는 시간(분) */
+/** Rough reading time in minutes. CJK is counted per character, everything else per word. */
 export function readingTime(body: string | undefined): number {
   if (!body) return 1;
   const text = body
@@ -54,7 +54,7 @@ export function readingTime(body: string | undefined): number {
   return Math.max(1, Math.round(cjk / 500 + words / 220));
 }
 
-/** 같은 카테고리 > 겹치는 태그 순으로 관련 글 추천 */
+/** Same category counts double; shared tags count once each. */
 export function relatedPosts(current: Post, all: Post[], limit = 3): Post[] {
   return all
     .filter((post) => post.id !== current.id)
@@ -69,15 +69,14 @@ export function relatedPosts(current: Post, all: Post[], limit = 3): Post[] {
     .map(({ post }) => post);
 }
 
+/** Dates in frontmatter are date-only, so format them in UTC to avoid drifting a day. */
 export function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('ko-KR', {
+  return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    timeZone: 'Asia/Seoul',
-  })
-    .format(date)
-    .replace(/\.$/, '');
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  }).format(date);
 }
 
 export function isoDate(date: Date): string {

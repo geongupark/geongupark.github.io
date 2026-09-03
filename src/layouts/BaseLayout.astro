@@ -27,7 +27,7 @@ const props = Astro.props;
   <head>
     <BaseHead {...props} />
     <script is:inline>
-      // FOUC 방지: 페인트 전에 테마를 확정합니다.
+      // Settle the theme before first paint so there is no flash.
       (() => {
         const stored = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -36,7 +36,7 @@ const props = Astro.props;
     </script>
   </head>
   <body>
-    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <a class="skip-link" href="#main">Skip to content</a>
     <Header />
     <main id="main">
       <slot />

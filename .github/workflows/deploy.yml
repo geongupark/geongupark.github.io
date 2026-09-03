@@ -10,7 +10,7 @@ permissions:
   pages: write
   id-token: write
 
-# 배포는 한 번에 하나만. 진행 중인 건 취소하지 않습니다.
+# One deploy at a time; never cancel one that is already running.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -28,7 +28,7 @@ jobs:
 
       - run: npm ci
 
-      # astro build → pagefind 인덱스 생성까지 한 번에
+      # astro build, then the pagefind index, in one step
       - run: npm run build
 
       - uses: actions/configure-pages@v5

@@ -14,7 +14,7 @@ const { title, description, date, category, draft } = post.data;
       <span aria-hidden="true">·</span>
       <span>{category}</span>
       <span aria-hidden="true">·</span>
-      <span>{readingTime(post.body)}분</span>
+      <span>{readingTime(post.body)} min read</span>
       {draft && <span class="draft">DRAFT</span>}
     </div>
     <h2>{title}</h2>

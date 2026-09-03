@@ -4,7 +4,7 @@ const enabled = Boolean(GISCUS.repoId && GISCUS.categoryId);
 ---
 
 {enabled ? (
-  <section class="comments" aria-label="댓글">
+  <section class="comments" aria-label="Comments">
     <h2 class="eyebrow">Comments</h2>
     <div id="giscus" data-config={JSON.stringify(GISCUS)}></div>
   </section>
@@ -12,9 +12,10 @@ const enabled = Boolean(GISCUS.repoId && GISCUS.categoryId);
   <section class="comments setup">
     <p class="eyebrow">Comments</p>
     <p>
-      댓글을 켜려면 <a href="https://giscus.app" rel="noopener">giscus.app</a> 에서 발급받은
-      <code>repoId</code> / <code>categoryId</code> 를 <code>src/config.ts</code> 의
-      <code>GISCUS</code> 에 넣으세요. (저장소 Settings → Discussions 활성화 필요)
+      To enable comments, get a <code>repoId</code> and <code>categoryId</code> from
+      <a href="https://giscus.app" rel="noopener">giscus.app</a> and put them in
+      <code>GISCUS</code> in <code>src/config.ts</code>. Discussions must be enabled
+      in the repository settings first.
     </p>
   </section>
 )}

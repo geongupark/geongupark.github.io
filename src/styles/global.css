@@ -88,7 +88,7 @@ a {
 
 a:hover { text-decoration-color: currentColor; }
 
-/* 링크처럼 안 보여야 하는 것들 */
+/* Links that should not look like links */
 a.plain,
 a.plain:hover { text-decoration: none; }
 
@@ -112,7 +112,7 @@ code {
 
 .muted { color: var(--fg-muted); }
 
-/* ── prose: 마크다운 본문 ─────────────────── */
+/* ── prose: rendered markdown ─────────────── */
 .prose {
   max-width: var(--measure);
   font-size: var(--text-lg);
@@ -216,7 +216,7 @@ code {
   padding: 0.05em 0.4em;
 }
 
-/* ── 유틸 ────────────────────────────────── */
+/* ── utilities ───────────────────────────── */
 .skip-link {
   position: absolute;
   left: -9999px;
