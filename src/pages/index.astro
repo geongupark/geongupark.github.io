@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostItem from '../components/PostItem.astro';
+import { getPosts, groupByCategory } from '../utils/posts';
+import { SITE } from '../config';
+
+const posts = await getPosts();
+const recent = posts.slice(0, 8);
+const categories = groupByCategory(posts).slice(0, 8);
+---
+
+<BaseLayout title={SITE.title} description={SITE.description}>
+  <div class="page">
+    <section class="hero">
+      <h1>{SITE.title}</h1>
+      <p>{SITE.intro}</p>
+    </section>
+
+    {categories.length > 0 && (
+      <nav class="cats" aria-label="Categories">
+        {categories.map((cat) => (
+          <a class="plain" href={`/categories/${cat.slug}`}>
+            {cat.name}<span class="mono n">{cat.posts.length}</span>
+          </a>
+        ))}
+      </nav>
+    )}
+
+    <section aria-label="Recent posts">
+      <p class="eyebrow section-label">Recent</p>
+      {recent.length === 0 ? (
+        <p class="empty">
+          No posts yet. Drop a markdown file into <code>src/content/blog/</code> and it shows up here.
+        </p>
+      ) : (
+        recent.map((post) => <PostItem post={post} />)
+      )}
+    </section>
+
+    {posts.length > recent.length && (
+      <p class="more"><a href="/posts">All {posts.length} posts →</a></p>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .hero { padding-block: 5rem 2.5rem; max-width: var(--measure); }
+  .hero h1 { font-size: var(--text-3xl); }
+  .hero p { margin-top: 1rem; color: var(--fg-muted); font-size: var(--text-lg); }
+
+  .cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding-bottom: 2.5rem;
+  }
+  .cats a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    border: var(--rule);
+    padding: 0.2rem 0.6rem;
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .cats a:hover { border-color: var(--line-strong); color: var(--fg); }
+  .cats .n { font-size: var(--text-xs); color: var(--fg-faint); }
+
+  .section-label { padding-bottom: 0.75rem; border-bottom: 1px solid var(--line-strong); }
+  .empty { padding-block: 2.5rem; color: var(--fg-muted); font-size: var(--text-sm); }
+  .empty code { background: var(--bg-subtle); border: var(--rule); padding: 0.05em 0.3em; }
+  .more { margin-top: 2rem; font-size: var(--text-sm); }
+</style>

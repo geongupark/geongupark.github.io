@@ -1,90 +1,141 @@
-<a href="https://jekyll-themes.com">
-<img src="https://img.shields.io/badge/featured%20on-JT-red.svg" height="20" alt="Jekyll Themes Shield" >
-</a>
+# geongupark.github.io
 
-# Orbit
-> This theme is designed by Xiaoying Riley at [3rd Wave Media](http://themes.3rdwavemedia.com/).
-> Visit [her website](http://themes.3rdwavemedia.com/) for more themes.
+A black-and-white, typography-first personal tech blog. Commit a markdown file and it ships.
 
-I have made this into a Jekyll Theme. Checkout the live demo [here](https://online-cv.webjeda.com).
-
-<table>
-  <tr>
-    <th>Desktop</th>
-    <th>Mobile</th>
-  </tr>
-  <tr>
-    <td>
-        <img src="https://online-cv.webjeda.com/assets/images/desktop.png?raw=true" width="600"/>
-    </td>
-    <td>
-        <img src="https://online-cv.webjeda.com/assets/images/mobile.png?raw=true" width="250"/>
-    </td>
-  </tr>
-</table>
-
-## Installation
-
-* [Fork](https://github.com/sharu725/online-cv/fork) the repository;
-* Go to settings and set master branch as Github Pages source;
-* Your new site should be ready at `https://<username>.github.io/online-cv/`;
-* Printable version of the site can be found at `https://<username>.github.io/online-cv/print`. Use a third party link https://pdflayer.com/, https://www.web2pdfconvert.com/ etc to get the printable PDF.
-
-Change all the details from one place: `_data/data.yml`.
-
-### To preview/edit locally with docker
-
-```sh
-docker-compose up
+```
+Astro 7 · Pagefind (search) · giscus (comments) · Expressive Code · GitHub Pages
 ```
 
-*docker-compose.yml* file is used to create a container that is reachable under <http://localhost:4000>.
-Changes *_data/data.yml* will be visible after a while.
-
-### Local machine
-
-* Get the repo into your machine 
+## Getting started
 
 ```bash
-git clone https://github.com/sharu725/online-cv.git
+npm install
+npm run dev        # http://localhost:4321
 ```
 
-* Install required ruby gems
+| Command | What it does |
+|---|---|
+| `npm run dev` | Dev server (search is inert here — see below) |
+| `npm run build` | Static build plus the Pagefind search index |
+| `npm run preview` | Serve the build — **this is where search works** |
+| `npm run new "Title"` | Scaffold a new post |
+| `npm run clean` | Remove build output and caches |
 
-```bash
-bundle install
+## Writing a post
+
+Any markdown (`.md` / `.mdx`) file under `src/content/blog/` is a post.
+
+```yaml
+---
+title: "Chasing Kafka consumer lag"
+description: "One line, used in the list, search results and the OG card"
+date: 2026-09-02
+category: backend            # exactly one; a new name creates the category
+tags: [kafka, monitoring]    # any number; each creates a tag page
+draft: false                 # true keeps it out of the deployed site
+updated: 2026-09-10          # optional
+series: "Running Kafka"      # optional; groups posts with the same value
+---
 ```
 
-* Serve the site locally
+Frontmatter is validated by the schema in `src/content.config.ts`. A typo **fails the
+build**, so a malformed post never reaches the site.
 
-```bash
-bundle exec jekyll serve
+### Categories and tags
+
+There is nothing to register. Write a new name in `category` or `tags` and
+`/categories/<name>` and `/tags/<name>` are generated at build time.
+
+### Code blocks
+
+````markdown
+```ts title="src/utils/posts.ts" {3-5}
+// file name, lines 3-5 highlighted, copy button included
+```
+````
+
+## Adding a page (CV and friends)
+
+A markdown file under `src/pages/` becomes a page.
+
+```markdown
+---
+layout: ../layouts/PageLayout.astro
+title: CV
+eyebrow: Page
+description: Experience and background
+---
+
+## Experience
+...
 ```
 
-* Navigate to `http://localhost:4000`
+To show it in the menu, add one line to `NAV` in `src/config.ts`.
 
+## Search
 
-## Skins
+[Pagefind](https://pagefind.app) builds a static index at build time — no server, no
+third-party service. `⌘K` or `/` opens the dialog.
 
-There are 6 color schemes available:
+> The index is created during `npm run build`, so **search returns nothing under
+> `npm run dev`**. Use `npm run build && npm run preview` to try it.
 
-| Blue | Turquoise | Green |
-|---------|---------|---------|
-| <img src="https://online-cv.webjeda.com/assets/images/blue.jpg" width="300"/> | <img src="https://online-cv.webjeda.com/assets/images/turquoise.jpg" width="300"/> | <img src="https://online-cv.webjeda.com/assets/images/green.jpg" width="300"/> |
+## Comments (giscus)
 
-| Berry | Orange | Ceramic |
-|---------|---------|---------|
-| <img src="https://online-cv.webjeda.com/assets/images/berry.jpg" width="300"/> | <img src="https://online-cv.webjeda.com/assets/images/orange.jpg" width="300"/> | <img src="https://online-cv.webjeda.com/assets/images/ceramic.jpg" width="300"/> |
+1. Repository **Settings → General → Features → Discussions**
+2. Create a `Comments` category in Discussions (the Announcement format works well)
+3. Enter this repository at [giscus.app](https://giscus.app) to get `repoId` and `categoryId`
+4. Fill them into `GISCUS` in `src/config.ts`
 
-## Credits
+Until then the post footer shows a short setup note instead of the widget.
 
-Thanks to [Nelson Estevão](https://github.com/nelsonmestevao) for all the [contributions](https://github.com/sharu725/online-cv/commits?author=nelsonmestevao).
+## Deploying
 
-Thanks to [t-h-e(sfrost)](https://github.com/t-h-e) for all the [contributions](https://github.com/sharu725/online-cv/commits?author=t-h-e).
+Pushing to `master` runs `.github/workflows/deploy.yml`, which builds the site and
+publishes it to GitHub Pages.
 
-Check out for more themes: [**Jekyll Themes**](http://jekyll-themes.com).
+One-time setup: **Settings → Pages → Build and deployment → Source** must be set to
+**GitHub Actions**.
 
-## Star History
+## Customizing
 
-[![Star History Chart](https://api.star-history.com/svg?repos=sharu725/online-cv&type=Date)](https://star-history.com/#sharu725/online-cv&Date)
+| To change | Edit |
+|---|---|
+| Title, intro, menu, social links | `src/config.ts` |
+| Color, type, spacing (design tokens) | `src/styles/tokens.css` |
+| Rendered markdown typography | `.prose` in `src/styles/global.css` |
+| Code block theme | `expressiveCode` in `astro.config.mjs` |
+| OG card design | `src/pages/og/[...slug].png.ts` |
 
+## Layout
+
+```
+src/
+├─ config.ts            site settings (title, menu, giscus)
+├─ content.config.ts    post frontmatter schema
+├─ content/blog/        ← every post lives here
+├─ pages/
+│  ├─ index.astro       home
+│  ├─ posts/            archive, pagination, post body
+│  ├─ categories/       index and per-category archives
+│  ├─ tags/             index and per-tag archives
+│  ├─ og/               per-post OG images, generated at build
+│  ├─ about.md          ← this is how a page is added
+│  ├─ rss.xml.js        feed
+│  └─ 404.astro
+├─ layouts/             Base and Page
+├─ components/          Header, Footer, Search, TOC, Comments, …
+├─ styles/              tokens.css, global.css
+└─ utils/posts.ts       sorting, grouping, reading time, related posts
+```
+
+## What's included
+
+Search (`⌘K`) · comments · categories · tags · series · related posts · prev/next ·
+table of contents with scroll spy · dark mode · RSS · sitemap · robots.txt ·
+generated OG images · JSON-LD · reading time · drafts · copy button on code blocks ·
+404 · keyboard navigation · skip link
+
+## License
+
+Content under `src/content/` is © the author. The site code is free to reuse.

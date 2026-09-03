@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { getPosts, groupByTag } from '../../utils/posts';
+
+const tags = groupByTag(await getPosts());
+---
+
+<BaseLayout title="Tags" description="Browse by tag">
+  <div class="page">
+    <PageHeader eyebrow="Index" title="Tags" description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"}`} />
+    <ul class="cloud">
+      {tags.map((tag) => (
+        <li>
+          <a class="plain" href={`/tags/${tag.slug}`}>#{tag.name}<span class="mono n">{tag.posts.length}</span></a>
+        </li>
+      ))}
+    </ul>
+    {tags.length === 0 && <p class="muted">No tags yet.</p>}
+  </div>
+</BaseLayout>
+
+<style>
+  .cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; }
+  .cloud a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    border: var(--rule);
+    padding: 0.25rem 0.65rem;
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+  .cloud a:hover { border-color: var(--line-strong); color: var(--fg); }
+  .n { font-size: var(--text-xs); color: var(--fg-faint); }
+</style>

@@ -1,0 +1,25 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  /** Passed in as frontmatter when a markdown page uses this layout. */
+  frontmatter?: { title: string; description?: string; eyebrow?: string };
+}
+const fm = Astro.props.frontmatter;
+const title = fm?.title ?? Astro.props.title;
+const description = fm?.description ?? Astro.props.description;
+const eyebrow = fm?.eyebrow ?? Astro.props.eyebrow;
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="page">
+    <PageHeader eyebrow={eyebrow} title={title} description={description} />
+    <div class="prose" data-pagefind-body>
+      <slot />
+    </div>
+  </div>
+</BaseLayout>

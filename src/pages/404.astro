@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404" description="Page not found." noindex>
+  <div class="page wrap">
+    <p class="eyebrow">404</p>
+    <h1>Page not found</h1>
+    <p class="muted">The address may have changed, or the post may be gone.</p>
+    <p class="links"><a href="/">Home</a> · <a href="/posts">All posts</a></p>
+  </div>
+</BaseLayout>
+
+<style>
+  .wrap { padding-block: 8rem 6rem; max-width: var(--measure); }
+  h1 { font-size: var(--text-2xl); margin-block: 0.75rem 1rem; }
+  .links { margin-top: 2rem; font-size: var(--text-sm); }
+</style>

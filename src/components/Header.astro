@@ -1,0 +1,91 @@
+---
+import { NAV, SITE } from '../config';
+import Search from './Search.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+
+<header>
+  <div class="page bar">
+    <a class="wordmark plain" href="/">{SITE.wordmark}</a>
+
+    <nav aria-label="Main">
+      {NAV.map(({ label, href }) => (
+        <a class="plain" href={href} aria-current={isActive(href) ? 'page' : undefined}>{label}</a>
+      ))}
+    </nav>
+
+    <div class="tools">
+      <Search />
+      <ThemeToggle />
+    </div>
+  </div>
+</header>
+
+<style>
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: var(--rule);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 3.5rem;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    white-space: nowrap;
+  }
+
+  nav {
+    display: flex;
+    gap: 1rem;
+    margin-right: auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+
+  nav a {
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+    white-space: nowrap;
+    padding-block: 0.15rem;
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  nav a:hover { color: var(--fg); }
+  nav a[aria-current='page'] { color: var(--fg); border-bottom-color: var(--line-strong); }
+
+  .tools { display: flex; align-items: center; gap: 0.4rem; }
+
+  /* On narrow screens the menu drops to its own row. */
+  @media (max-width: 34rem) {
+    .bar {
+      height: auto;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      padding-block: 0.65rem 0.5rem;
+    }
+    .wordmark { margin-right: auto; }
+    .tools { order: 2; }
+    nav {
+      order: 3;
+      width: 100%;
+      margin-right: 0;
+      gap: 1rem;
+    }
+  }
+</style>

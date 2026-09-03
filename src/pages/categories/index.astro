@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { formatDate, getPosts, groupByCategory } from '../../utils/posts';
+
+const categories = groupByCategory(await getPosts());
+---
+
+<BaseLayout title="Categories" description="Posts grouped by subject">
+  <div class="page">
+    <PageHeader eyebrow="Index" title="Categories" description={`${categories.length} ${categories.length === 1 ? "category" : "categories"}`} />
+    <ul class="list">
+      {categories.map((cat) => (
+        <li>
+          <a class="plain" href={`/categories/${cat.slug}`}>
+            <span class="name">{cat.name}</span>
+            <span class="mono n">{cat.posts.length}</span>
+          </a>
+          <p class="latest mono">Latest {formatDate(cat.posts[0]!.data.date)}</p>
+        </li>
+      ))}
+    </ul>
+    {categories.length === 0 && <p class="muted">No categories yet.</p>}
+  </div>
+</BaseLayout>
+
+<style>
+  .list { list-style: none; padding: 0; }
+  .list li { border-bottom: var(--rule); padding-block: 1.25rem; }
+  .list a { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .name { font-size: var(--text-xl); font-weight: 700; letter-spacing: var(--tracking-tight); }
+  .list a:hover .name { text-decoration: underline; text-underline-offset: 0.22em; }
+  .n { font-size: var(--text-sm); color: var(--fg-faint); }
+  .latest { margin-top: 0.3rem; font-size: var(--text-xs); color: var(--fg-faint); }
+</style>

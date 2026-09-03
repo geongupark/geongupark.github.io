@@ -1,0 +1,68 @@
+---
+import { GISCUS } from '../config';
+const enabled = Boolean(GISCUS.repoId && GISCUS.categoryId);
+---
+
+{enabled ? (
+  <section class="comments" aria-label="Comments">
+    <h2 class="eyebrow">Comments</h2>
+    <div id="giscus" data-config={JSON.stringify(GISCUS)}></div>
+  </section>
+) : (
+  <section class="comments setup">
+    <p class="eyebrow">Comments</p>
+    <p>
+      To enable comments, get a <code>repoId</code> and <code>categoryId</code> from
+      <a href="https://giscus.app" rel="noopener">giscus.app</a> and put them in
+      <code>GISCUS</code> in <code>src/config.ts</code>. Discussions must be enabled
+      in the repository settings first.
+    </p>
+  </section>
+)}
+
+<style>
+  .comments { margin-top: 4rem; padding-top: 2rem; border-top: var(--rule); }
+  .comments .eyebrow { margin-bottom: 1.25rem; }
+  .setup p:last-child { font-size: var(--text-sm); color: var(--fg-muted); }
+  .setup code {
+    background: var(--bg-subtle);
+    border: var(--rule);
+    padding: 0.05em 0.3em;
+  }
+</style>
+
+<script>
+  const mount = document.getElementById('giscus');
+  if (mount) {
+    const config = JSON.parse(mount.dataset.config!);
+    const themeFor = (mode: string) => (mode === 'dark' ? 'dark_dimmed' : 'light');
+
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    Object.entries({
+      'data-repo': config.repo,
+      'data-repo-id': config.repoId,
+      'data-category': config.category,
+      'data-category-id': config.categoryId,
+      'data-mapping': config.mapping,
+      'data-strict': '1',
+      'data-reactions-enabled': config.reactionsEnabled,
+      'data-emit-metadata': '0',
+      'data-input-position': config.inputPosition,
+      'data-theme': themeFor(document.documentElement.dataset.theme ?? 'light'),
+      'data-lang': config.lang,
+      'data-loading': 'lazy',
+    }).forEach(([key, value]) => script.setAttribute(key, String(value)));
+    mount.appendChild(script);
+
+    document.addEventListener('themechange', (event) => {
+      const frame = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+      frame?.contentWindow?.postMessage(
+        { giscus: { setConfig: { theme: themeFor((event as CustomEvent).detail) } } },
+        'https://giscus.app',
+      );
+    });
+  }
+</script>

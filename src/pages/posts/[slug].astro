@@ -1,0 +1,205 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TOC from '../../components/TOC.astro';
+import TagList from '../../components/TagList.astro';
+import Comments from '../../components/Comments.astro';
+import { formatDate, getPosts, readingTime, relatedPosts, slugify } from '../../utils/posts';
+import type { Post } from '../../utils/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      prev: posts[posts.indexOf(post) + 1],
+      next: posts[posts.indexOf(post) - 1],
+      related: relatedPosts(post, posts),
+      series: post.data.series
+        ? posts
+            .filter((p) => p.data.series === post.data.series)
+            .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
+        : [],
+    },
+  }));
+}
+
+interface Props { post: Post; prev?: Post; next?: Post; related: Post[]; series: Post[] }
+const { post, prev, next, related, series } = Astro.props;
+const { title, description, date, updated, category, tags, draft } = post.data;
+const { Content, headings } = await render(post);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={`/og/${post.id}.png`}
+  type="article"
+  publishedTime={date}
+  modifiedTime={updated}
+  tags={[...tags]}
+  noindex={draft}
+>
+  <div class="shell">
+    <article class="page" data-pagefind-body>
+      <header class="head">
+        <div class="meta mono">
+          <time datetime={date.toISOString()} data-pagefind-meta="date">{formatDate(date)}</time>
+          <span aria-hidden="true">·</span>
+          <a href={`/categories/${slugify(category)}`} data-pagefind-filter="category" data-pagefind-meta="category">{category}</a>
+          <span aria-hidden="true">·</span>
+          <span>{readingTime(post.body)} min read</span>
+          {draft && <span class="draft">DRAFT</span>}
+        </div>
+        <h1>{title}</h1>
+        <p class="lede">{description}</p>
+        {updated && (
+          <p class="updated mono">Updated {formatDate(updated)}</p>
+        )}
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <footer class="foot" data-pagefind-ignore>
+        <TagList tags={[...tags]} />
+
+        {series.length > 1 && (
+          <section class="block">
+            <p class="eyebrow">Series · {post.data.series}</p>
+            <ol class="series">
+              {series.map((item, index) => (
+                <li aria-current={item.id === post.id ? 'true' : undefined}>
+                  <span class="mono num">{String(index + 1).padStart(2, '0')}</span>
+                  {item.id === post.id ? <span>{item.data.title}</span> : <a href={`/posts/${item.id}`}>{item.data.title}</a>}
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+
+        <nav class="adjacent" aria-label="Adjacent posts">
+          {prev ? (
+            <a class="plain" href={`/posts/${prev.id}`} rel="prev">
+              <span class="eyebrow">Previous</span>
+              <span class="t">{prev.data.title}</span>
+            </a>
+          ) : <span></span>}
+          {next && (
+            <a class="plain next" href={`/posts/${next.id}`} rel="next">
+              <span class="eyebrow">Next</span>
+              <span class="t">{next.data.title}</span>
+            </a>
+          )}
+        </nav>
+
+        {related.length > 0 && (
+          <section class="block">
+            <p class="eyebrow">Related</p>
+            <ul class="related">
+              {related.map((item) => (
+                <li>
+                  <a href={`/posts/${item.id}`}>{item.data.title}</a>
+                  <span class="mono muted"> · {formatDate(item.data.date)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <Comments />
+      </footer>
+    </article>
+
+    <aside class="rail" data-pagefind-ignore>
+      <div class="rail-inner"><TOC headings={headings} /></div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<script>
+  // Heading anchors. The ids already exist from the build, so only the link is added.
+  for (const heading of document.querySelectorAll<HTMLElement>('.prose :is(h2, h3, h4)[id]')) {
+    const anchor = document.createElement('a');
+    anchor.className = 'heading-anchor';
+    anchor.href = `#${heading.id}`;
+    anchor.textContent = '#';
+    anchor.setAttribute('aria-hidden', 'true');
+    anchor.tabIndex = -1;
+    heading.appendChild(anchor);
+  }
+</script>
+
+<style>
+  .shell { position: relative; }
+
+  .head { padding-block: 3.5rem 2rem; border-bottom: var(--rule); max-width: var(--measure); }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: var(--text-xs);
+    color: var(--fg-faint);
+  }
+  .meta a { color: inherit; text-decoration-color: var(--line); }
+  .meta a:hover { color: var(--fg); }
+  .draft { border: 1px solid var(--line-strong); color: var(--fg); padding-inline: 0.3em; }
+
+  h1 {
+    font-size: var(--text-3xl);
+    margin-top: 0.7rem;
+  }
+
+  .lede {
+    margin-top: 1rem;
+    color: var(--fg-muted);
+    font-size: var(--text-lg);
+  }
+
+  .updated { margin-top: 0.9rem; font-size: var(--text-xs); color: var(--fg-faint); }
+
+  .prose { padding-top: 2.5rem; }
+
+  .foot { margin-top: 4rem; max-width: var(--measure); }
+  .block { margin-top: 3rem; }
+  .block .eyebrow { margin-bottom: 0.9rem; }
+
+  .series, .related { list-style: none; padding: 0; font-size: var(--text-sm); }
+  .series li, .related li { padding-block: 0.35rem; }
+  .series li[aria-current='true'] { color: var(--fg); font-weight: 600; }
+  .series .num { color: var(--fg-faint); margin-right: 0.6rem; }
+
+  .adjacent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin-top: 3rem;
+    background: var(--line);
+    border-block: var(--rule);
+  }
+  .adjacent > * { background: var(--bg); padding: 1.25rem 1rem; }
+  .adjacent a { display: flex; flex-direction: column; gap: 0.4rem; }
+  .adjacent a:hover .t { text-decoration: underline; text-underline-offset: 0.22em; }
+  .adjacent .next { text-align: right; }
+  .adjacent .t { font-size: var(--text-sm); font-weight: 600; letter-spacing: var(--tracking-tight); }
+
+  @media (max-width: 34rem) {
+    .adjacent { grid-template-columns: 1fr; }
+    .adjacent .next { text-align: left; }
+  }
+
+  /* The table of contents only sits beside the article on wide screens. */
+  .rail { display: none; }
+  @media (min-width: 78rem) {
+    .rail {
+      display: block;
+      position: absolute;
+      inset-block: 0;
+      left: calc(50% + var(--page) / 2 + 2.5rem);
+      width: 13rem;
+    }
+    .rail-inner { position: sticky; top: 5.5rem; max-height: calc(100dvh - 8rem); overflow-y: auto; }
+  }
+</style>
