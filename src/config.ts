@@ -4,12 +4,12 @@
 
 export const SITE = {
   url: 'https://geongupark.github.io',
-  title: 'Geongu Park',
+  title: 'Gus-Commit',
   /** Header wordmark — keep it short. */
   wordmark: 'geongu.park',
-  description: 'Notes on the things I build and the things that break.',
+  description: 'Notes on the things I learned.',
   /** One-line introduction on the home page. */
-  intro: 'Backend and infrastructure. I read, I build, I write it down.',
+  intro: 'Better than Yesterday',
   author: 'Geongu Park',
   locale: 'en-US',
   lang: 'en',
@@ -38,9 +38,9 @@ export const SOCIAL: { label: string; href: string }[] = [
  */
 export const GISCUS = {
   repo: 'geongupark/geongupark.github.io',
-  repoId: '',
+  repoId: 'R_kgDONIS3rA',
   category: 'Comments',
-  categoryId: '',
+  categoryId: 'DIC_kwDONIS3rM4DExfl',
   mapping: 'pathname',
   reactionsEnabled: '1',
   inputPosition: 'top',
