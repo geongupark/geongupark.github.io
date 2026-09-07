@@ -14,3 +14,7 @@ draft: true
 AOSP consists of many repositories but it is not a git repository.
 
 > **Why do we use AOSP?**
+
+Each company and people have different requirements. So they should choice what they should build with.
+
+You could select and build modules by manifest.xml
