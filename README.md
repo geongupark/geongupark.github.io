@@ -54,6 +54,59 @@ There is nothing to register. Write a new name in `category` or `tags` and
 ```
 ````
 
+## Editing in the browser
+
+[Sveltia CMS](https://github.com/sveltia/sveltia-cms) is served at
+[`/admin`](https://geongupark.github.io/admin). It is a static page that talks to the
+GitHub API from your browser — publishing a post is a commit, which triggers the deploy
+workflow like any other push.
+
+Access is decided by GitHub, not by this repo: signing in requires a token with write
+access here. Anyone can open `/admin`, but without that access they cannot read or change
+anything. `public/admin/config.yml` is public and holds no secrets.
+
+### Try it with no setup
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:4321/admin` in Chrome or Edge and choose **Work with Local
+Repository**. It edits the files in this checkout directly through the File System Access
+API — no login, no OAuth, nothing deployed. Changes land in your working tree, and you
+commit them yourself.
+
+### Signing in on the live site
+
+Open [`https://geongupark.github.io/admin`](https://geongupark.github.io/admin) and pick
+**Sign In Using Access Token**. Generate a fine-grained personal access token on GitHub
+scoped to this repository with **Contents: read and write**, then paste it in. Nothing
+else to deploy.
+
+The **Sign In with GitHub** button is a nicer flow but needs an OAuth relay, because
+GitHub will not hand a token to a static page. If you want it, deploy
+[Sveltia CMS Authenticator](https://github.com/sveltia/sveltia-cms-auth) to Cloudflare
+Workers' free tier:
+
+1. Deploy the worker and note its URL.
+2. Create a GitHub OAuth app under **Settings → Developer settings → OAuth Apps** with the
+   callback URL set to `https://<worker>.workers.dev/callback`.
+3. Put the client ID and secret into the worker's environment variables, with
+   `ALLOWED_DOMAINS` set to `geongupark.github.io`.
+4. Uncomment `base_url` in `public/admin/config.yml` and point it at the worker.
+
+### Notes
+
+- **Drafts** default to on. A post stays out of the deployed site until you turn it off.
+- **Images** dropped into the editor are committed to `public/uploads/` and referenced as
+  `/uploads/<file>`.
+- **Category** is a free text field on purpose: typing a name that does not exist yet
+  creates that category page on the next build. Same for tags.
+- The **About page** is editable under Singletons. Other pages under `src/pages/` can be
+  added to `singletons` in the config the same way.
+- The CMS is pinned to an exact version in `public/admin/index.html` so the editor cannot
+  break on its own. Bump it deliberately.
+
 ## Adding a page (CV and friends)
 
 A markdown file under `src/pages/` becomes a page.
@@ -131,7 +184,7 @@ src/
 
 ## What's included
 
-Search (`⌘K`) · comments · categories · tags · series · related posts · prev/next ·
+Browser-based editor at `/admin` · search (`⌘K`) · comments · categories · tags · series · related posts · prev/next ·
 table of contents with scroll spy · dark mode · RSS · sitemap · robots.txt ·
 generated OG images · JSON-LD · reading time · drafts · copy button on code blocks ·
 404 · keyboard navigation · skip link

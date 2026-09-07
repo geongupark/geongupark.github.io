@@ -1,0 +1,139 @@
+# Sveltia CMS — the editor served at /admin
+#
+# This file is public, and that is fine: it holds no secrets. Access is decided by
+# GitHub, not by this file. Signing in requires a token with write access to the
+# repository below, so anyone else can open /admin but cannot read or change anything.
+#
+# Setup steps are in README.md ("Editing in the browser").
+
+backend:
+  name: github
+  repo: geongupark/geongupark.github.io
+  branch: master
+  # Signing in with a personal access token needs nothing else.
+  # The "Sign In with GitHub" button additionally needs an OAuth relay: deploy
+  # https://github.com/sveltia/sveltia-cms-auth and uncomment the line below.
+  # base_url: https://your-worker.workers.dev
+  commit_messages:
+    create: 'content: add {{collection}} "{{slug}}"'
+    update: 'content: update {{collection}} "{{slug}}"'
+    delete: 'content: remove {{collection}} "{{slug}}"'
+    uploadMedia: 'content: upload {{path}}'
+    deleteMedia: 'content: remove {{path}}'
+
+app_title: Gus-Commit
+site_url: https://geongupark.github.io
+publish_mode: simple
+
+# Images dropped into the editor land here and are served from the site root.
+media_folder: public/uploads
+public_folder: /uploads
+
+output:
+  # Leave optional fields out of the frontmatter when they are empty, so the
+  # content schema in src/content.config.ts never sees an empty date string.
+  omit_empty_optional_fields: true
+
+collections:
+  - name: posts
+    label: Posts
+    label_singular: Post
+    icon: article
+    description: One markdown file per post, under src/content/blog.
+    folder: src/content/blog
+    extension: md
+    format: yaml-frontmatter
+    create: true
+    delete: true
+    slug: '{{slug}}'
+    summary: '{{title}}'
+    preview_path: posts/{{slug}}
+    sortable_fields: [date, title, category]
+    view_filters:
+      - name: drafts
+        label: Drafts
+        field: draft
+        pattern: true
+      - name: published
+        label: Published
+        field: draft
+        pattern: false
+    fields:
+      - name: title
+        label: Title
+        widget: string
+
+      - name: description
+        label: Description
+        widget: text
+        hint: One line. Used in the post list, search results and the social card.
+
+      - name: date
+        label: Date
+        widget: datetime
+        format: 'YYYY-MM-DD'
+        time_format: false
+        picker_utc: true
+        default: '{{now}}'
+
+      - name: updated
+        label: Updated
+        widget: datetime
+        format: 'YYYY-MM-DD'
+        time_format: false
+        picker_utc: true
+        required: false
+        hint: Only fill this in when revising a published post.
+
+      - name: category
+        label: Category
+        widget: string
+        default: etc
+        hint: Exactly one. A name you have not used before creates a new category page.
+
+      - name: tags
+        label: Tags
+        widget: list
+        required: false
+        hint: Each tag gets its own page.
+
+      - name: series
+        label: Series
+        widget: string
+        required: false
+        hint: Posts sharing this name are grouped as a series.
+
+      - name: draft
+        label: Draft
+        widget: boolean
+        default: true
+        hint: Drafts are kept out of the deployed site.
+
+      - name: body
+        label: Body
+        widget: markdown
+
+# Standalone files that are not part of a collection.
+singletons:
+  - name: about
+    label: About page
+    icon: person
+    file: src/pages/about.md
+    preview_path: about
+    fields:
+      - name: layout
+        widget: hidden
+        default: ../layouts/PageLayout.astro
+      - name: title
+        label: Title
+        widget: string
+      - name: eyebrow
+        label: Eyebrow
+        widget: string
+        required: false
+      - name: description
+        label: Description
+        widget: text
+      - name: body
+        label: Body
+        widget: markdown
