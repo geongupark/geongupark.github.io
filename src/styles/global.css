@@ -217,8 +217,11 @@ code {
   overflow-x: auto;
 }
 
+/* Keep the diagram at its natural size and let the figure scroll instead:
+   shrinking a wide flowchart to the column width makes its labels unreadable.
+   Overrides the global `svg { max-width: 100% }`. */
 .prose .diagram svg {
-  max-width: 100%;
+  max-width: none;
   height: auto;
   margin-inline: auto;
 }
