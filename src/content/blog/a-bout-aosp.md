@@ -25,24 +25,16 @@ Commercial devices and embedded targets have drastically different requirements.
 - **`BoardConfig.mk` & `device.mk`**: The hardware recipe. These makefiles configure low-level architecture flags, kernel build parameters, vendor partition layouts, and graphic HAL properties (e.g., setting `ro.hardware.egl = angle`).
 - **Soong & `Android.bp`**: The build engine. Soong parses blueprints (`Android.bp`) across modules to compile only the necessary binaries, HALs, and libraries, producing the final system images (`system.img`, `vendor.img`).
 
-\`\`\`mermaid title=""
+```plain
+mermaid title="aosp"
 
 flowchart LR
-
     classDef default fill:#1f2430,stroke:#707a8c,stroke-width:1px,color:#ffffff;
-
     classDef note fill:#fff3cd,stroke:#ffeeba,stroke-width:1.5px,color:#856404;
-
     M["manifest.xml<br/>(repo sync)"] --> L["lunch Target<br/>(Build Env Setup)"]
-
     L --> D["device.mk & BoardConfig.mk<br/>(Hardware Spec & HAL Setup)"]
-
     D --> B["Soong & Android.bp<br/>(Module Compilation via m)"]
-
     B --> IMG["Custom Images<br/>(system.img / vendor.img)"]
-
     NOTE["Custom Android OS tailored for target hardware"]:::note
-
     IMG -.- NOTE
-
-\`\`\`
+```
