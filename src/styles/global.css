@@ -209,6 +209,27 @@ code {
 
 .prose .expressive-code { margin-block: 1.75em; }
 
+/* Mermaid diagrams, rendered to SVG at build time. */
+.prose .diagram {
+  margin-block: 2em;
+  padding: 1.5rem 1rem;
+  border: var(--rule);
+  overflow-x: auto;
+}
+
+.prose .diagram svg {
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.prose .diagram figcaption {
+  margin-top: 1rem;
+  font-size: var(--text-sm);
+  color: var(--fg-faint);
+  text-align: center;
+}
+
 .prose kbd {
   font-family: var(--font-mono);
   font-size: 0.8em;

@@ -45,6 +45,34 @@ $ npx pagefind --site dist
 Indexed 2 pages
 ```
 
+## Diagrams
+
+A ```` ```mermaid ```` fence is drawn as a diagram. It is rendered to SVG during the
+build, so the page still ships no JavaScript for it, and the colors come from the site's
+own tokens — the same file is used in both themes.
+
+```mermaid title="From markdown to live site"
+flowchart LR
+  A[Write markdown] --> B[Commit]
+  B --> C[Actions]
+  C --> D[Live]
+```
+
+Adding `title="..."` after the language, as above, gives the diagram a caption and an
+accessible name.
+
+Sequence diagrams work too:
+
+```mermaid
+sequenceDiagram
+  Browser->>Worker: token request
+  Worker->>GitHub: exchange
+  GitHub-->>Browser: token
+```
+
+Flowcharts, sequence, state, class, ER and xychart diagrams are supported. Anything else
+is left as a plain code block rather than breaking the build.
+
 ## Quotes and tables
 
 > Good design is as little design as possible.
