@@ -1,12 +1,12 @@
 ---
 title: A bout AOSP
 description: AOSP consists of many Git repositories.
-date: 2026-09-07
+date: 2026-09-08
 category: Android
 tags:
   - android
   - AOSP
-draft: true
+draft: false
 ---
 
 > **What is the AOSP?**
@@ -15,7 +15,7 @@ AOSP (Android Open Source Project) is the raw, pure source code of the Android o
 
 - It is **not a single monolithic Git repository**.
 - Instead, it consists of hundreds of modular Git repositories managed collectively via Google's Python-based wrapper tool, **`repo`**.
-  
+
 > **Why do we use AOSP?**
 
 Commercial devices and embedded targets have drastically different requirements. AOSP allows you to build a tailor-made OS stack from the ground up using four core mechanisms:
