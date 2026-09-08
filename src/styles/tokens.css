@@ -44,6 +44,15 @@
   --gutter: clamp(1.25rem, 5vw, 2rem);
   --rule: 1px solid var(--line);
 
+  /* Diagrams. Build-time SVGs read these, so one file serves both themes. */
+  --diagram-bg: var(--bg);
+  --diagram-fg: var(--fg);
+  --diagram-line: var(--fg-muted);
+  --diagram-accent: var(--fg);
+  --diagram-muted: var(--fg-muted);
+  --diagram-surface: var(--bg);
+  --diagram-border: var(--fg);
+
   /* Motion */
   --ease: cubic-bezier(0.2, 0, 0, 1);
   --dur: 150ms;

@@ -1,15 +1,50 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
 
 import { SITE } from './src/config.ts';
+import { diagramFigure } from './src/utils/mermaid.ts';
+
+/**
+ * Turns ```mermaid fences into inline SVG at build time.
+ *
+ * Registered here rather than after Expressive Code on purpose: user hast plugins
+ * run before the built-in ones, so the block is swapped out before Expressive Code
+ * can claim it as a code block. Anything this cannot draw is left untouched and
+ * still renders as ordinary highlighted code.
+ *
+ * @type {import('satteri').HastPluginDefinition}
+ */
+const mermaidDiagrams = {
+  name: 'mermaid-diagrams',
+  element: {
+    filter: ['pre'],
+    visit(node, ctx) {
+      const code = node.children?.[0];
+
+      if (code?.type !== 'element' || code.tagName !== 'code' || code.data?.lang !== 'mermaid') {
+        return;
+      }
+
+      const figure = diagramFigure(ctx.textContent(node), code.data?.meta);
+
+      if (figure) {
+        ctx.replaceNode(node, { type: 'raw', value: figure });
+      }
+    },
+  },
+};
 
 export default defineConfig({
   site: SITE.url,
   trailingSlash: 'ignore',
   build: { format: 'directory' },
+  markdown: {
+    processor: satteri({ hastPlugins: [mermaidDiagrams] }),
+  },
   integrations: [
     expressiveCode({
       themes: ['github-light', 'github-dark'],

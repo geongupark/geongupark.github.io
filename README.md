@@ -107,6 +107,37 @@ Workers' free tier:
 - The CMS is pinned to an exact version in `public/admin/index.html` so the editor cannot
   break on its own. Bump it deliberately.
 
+## Diagrams
+
+A ```` ```mermaid ```` fence in a post becomes a diagram:
+
+````markdown
+```mermaid title="From markdown to live site"
+flowchart LR
+  A[Write markdown] --> B[Commit]
+  B --> C[Actions]
+  C --> D[Live]
+```
+````
+
+It is rendered to inline SVG at build time by
+[beautiful-mermaid](https://github.com/beautiful-diagrams/beautiful-mermaid), which needs
+no browser, so:
+
+- a page with a diagram still ships **no JavaScript** for it, and it paints with the
+  first render rather than after a script loads;
+- every color in the SVG is a CSS custom property (`--diagram-*` in
+  `src/styles/tokens.css`), so **one file serves both themes** and the theme toggle
+  repaints diagrams instantly.
+
+`title="..."` after the language adds a caption and the SVG's accessible name.
+
+Supported: `flowchart` / `graph`, `sequenceDiagram`, `stateDiagram-v2`, `classDiagram`,
+`erDiagram`, `xychart-beta`. Not supported: `pie`, `gantt`, `gitGraph`, `mindmap`,
+`journey`, `timeline`, `quadrantChart` — those fences stay ordinary code blocks instead
+of failing the build. This is a compact reimplementation rather than mermaid.js itself,
+so complex diagrams may lay out differently than on mermaid.live.
+
 ## Adding a page (CV and friends)
 
 A markdown file under `src/pages/` becomes a page.
@@ -184,7 +215,7 @@ src/
 
 ## What's included
 
-Browser-based editor at `/admin` · search (`⌘K`) · comments · categories · tags · series · related posts · prev/next ·
+Browser-based editor at `/admin` · search (`⌘K`) · comments · mermaid diagrams · categories · tags · series · related posts · prev/next ·
 table of contents with scroll spy · dark mode · RSS · sitemap · robots.txt ·
 generated OG images · JSON-LD · reading time · drafts · copy button on code blocks ·
 404 · keyboard navigation · skip link
