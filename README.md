@@ -104,6 +104,9 @@ Workers' free tier:
   creates that category page on the next build. Same for tags.
 - The **About page** is editable under Singletons. Other pages under `src/pages/` can be
   added to `singletons` in the config the same way.
+- The body field is **raw Markdown only** (`modes: [raw]`). The rich text editor rewrites
+  what it does not recognise — it escaped the backticks of a ```` ```mermaid ```` fence into
+  `` \` ``, which then rendered as literal text on the site. Paste Markdown as Markdown.
 - The CMS is pinned to an exact version in `public/admin/index.html` so the editor cannot
   break on its own. Bump it deliberately.
 

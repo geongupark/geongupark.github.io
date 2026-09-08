@@ -112,6 +112,10 @@ collections:
       - name: body
         label: Body
         widget: markdown
+        # Raw Markdown only. The rich text editor rewrites what it does not
+        # recognise: it escaped the backticks of a ```mermaid fence, which then
+        # rendered as literal text on the site instead of a diagram.
+        modes: [raw]
 
 # Standalone files that are not part of a collection.
 singletons:
@@ -137,3 +141,4 @@ singletons:
       - name: body
         label: Body
         widget: markdown
+        modes: [raw]
