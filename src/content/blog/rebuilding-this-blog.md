@@ -1,9 +1,11 @@
 ---
-title: "Rebuilding this blog"
-description: "A black-and-white, typography-first blog on Astro. Here's how it's put together and how to write for it."
+title: Rebuilding this blog
+description: A black-and-white, typography-first blog on Astro. Here's how it's put together and how to write for it.
 date: 2026-09-02
-category: meta
-tags: [astro, pagefind]
+category: TIL
+tags:
+  - astro
+  - pagefind
 draft: false
 ---
 
