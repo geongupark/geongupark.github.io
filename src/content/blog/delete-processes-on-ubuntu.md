@@ -7,6 +7,7 @@ tags:
   - Linux
   - Ubuntu
   - Process
+series: Cheat Sheet on Ubuntu
 draft: false
 ---
 
