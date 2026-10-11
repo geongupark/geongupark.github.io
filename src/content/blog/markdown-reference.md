@@ -1,9 +1,11 @@
 ---
-title: "Markdown reference"
-description: "Headings, lists, tables, code blocks and quotes, all on one page, to check how the type behaves."
+title: Markdown reference
+description: Headings, lists, tables, code blocks and quotes, all on one page, to check how the type behaves.
 date: 2026-09-01
-category: meta
-tags: [markdown, design]
+category: TIL
+tags:
+  - markdown
+  - design
 draft: false
 ---
 
