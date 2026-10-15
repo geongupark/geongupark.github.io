@@ -1,23 +1,25 @@
 /* ─────────────────────────────────────────────
    Design tokens — color, type and spacing are edited only here.
-   The concept: black and white, no accent color. Emphasis comes from
-   weight, whitespace and hairlines.
+   The concept: two colors, no accent hue. Emphasis comes from weight,
+   whitespace and hairlines. Light mode sits on warm paper rather than
+   pure white; the neutrals are warmed to match so nothing reads grey
+   against it.
    ───────────────────────────────────────────── */
 
 :root {
   color-scheme: light;
 
   /* Color */
-  --bg: #ffffff;
-  --bg-subtle: #fafafa;
-  --fg: #101010;
-  --fg-muted: #666666;
-  --fg-faint: #949494;
-  --line: #e6e6e6;
-  --line-strong: #101010;
-  --selection-bg: #101010;
-  --selection-fg: #ffffff;
-  --mark-bg: #ebebeb;
+  --bg: #faf9f5;
+  --bg-subtle: #f2f0e9;
+  --fg: #141413;
+  --fg-muted: #67655d;
+  --fg-faint: #747166;
+  --line: #e5e2d8;
+  --line-strong: #141413;
+  --selection-bg: #141413;
+  --selection-fg: #faf9f5;
+  --mark-bg: #ebe7d9;
 
   /* Type */
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
