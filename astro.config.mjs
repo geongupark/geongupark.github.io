@@ -86,6 +86,19 @@ export default defineConfig({
           tooltipSuccessBackground: 'var(--fg)',
           tooltipSuccessForeground: 'var(--bg)',
         },
+        // Line markers ship with a blue/green/red hue, the only accent color
+        // left on a two-color site. Every marker color is derived from
+        // lch(<luminance> <defaultChroma> <hue>), so dropping the chroma to 0
+        // turns all of them neutral in both themes at once. Diff lines are
+        // still told apart by their `+` and `-` gutter indicators.
+        textMarkers: {
+          defaultChroma: '0',
+          // With no hue left, inserted and deleted lines would be the same grey.
+          // Separate them by luminance instead, so a diff still reads as two
+          // bands. Values are [dark theme, light theme].
+          insBackground: ['lch(40% 0 0 / 50%)', 'lch(85% 0 0 / 55%)'],
+          delBackground: ['lch(24% 0 0 / 50%)', 'lch(62% 0 0 / 50%)'],
+        },
       },
     }),
     mdx(),

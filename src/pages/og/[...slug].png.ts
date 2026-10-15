@@ -65,6 +65,8 @@ export async function getStaticPaths() {
 export const GET: APIRoute = async ({ props }) => {
   const { eyebrow, title, subtitle } = props as { eyebrow: string; title: string; subtitle: string };
 
+  // Literal colors: satori has no CSS variables. These mirror the light
+  // theme tokens in src/styles/tokens.css.
   const markup = el(
     'div',
     {
@@ -74,15 +76,15 @@ export const GET: APIRoute = async ({ props }) => {
       width: '1200px',
       height: '630px',
       padding: '72px',
-      backgroundColor: '#ffffff',
-      color: '#101010',
+      backgroundColor: '#faf9f5',
+      color: '#141413',
       fontFamily: 'Pretendard',
-      border: '10px solid #101010',
+      border: '10px solid #141413',
     },
     [
       el(
         'div',
-        { display: 'flex', fontSize: '24px', letterSpacing: '0.12em', color: '#8f8f8f', textTransform: 'uppercase' },
+        { display: 'flex', fontSize: '24px', letterSpacing: '0.12em', color: '#747166', textTransform: 'uppercase' },
         truncate(eyebrow, 48),
       ),
       el('div', { display: 'flex', flexDirection: 'column' }, [
@@ -93,13 +95,13 @@ export const GET: APIRoute = async ({ props }) => {
         ),
         el(
           'div',
-          { display: 'flex', marginTop: '24px', fontSize: '28px', lineHeight: 1.5, color: '#666666' },
+          { display: 'flex', marginTop: '24px', fontSize: '28px', lineHeight: 1.5, color: '#67655d' },
           truncate(subtitle ?? '', 120),
         ),
       ]),
-      el('div', { display: 'flex', justifyContent: 'space-between', fontSize: '24px', color: '#101010' }, [
+      el('div', { display: 'flex', justifyContent: 'space-between', fontSize: '24px', color: '#141413' }, [
         el('div', { display: 'flex', fontWeight: 700 }, SITE.wordmark),
-        el('div', { display: 'flex', color: '#8f8f8f' }, SITE.author),
+        el('div', { display: 'flex', color: '#747166' }, SITE.author),
       ]),
     ],
   );

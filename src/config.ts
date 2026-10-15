@@ -6,10 +6,10 @@ export const SITE = {
   url: 'https://geongupark.github.io',
   title: 'Gus-Commit',
   /** Header wordmark — keep it short. */
-  wordmark: 'geongu.park',
+  wordmark: 'gus-commit',
   description: 'Notes on the things I learned.',
-  /** One-line introduction on the home page. */
-  intro: 'Better than Yesterday',
+  /** The home page heading. */
+  intro: 'What gets you excited?',
   author: 'Geongu Park',
   locale: 'en-US',
   lang: 'en',

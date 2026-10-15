@@ -12,8 +12,7 @@ const categories = groupByCategory(posts).slice(0, 8);
 <BaseLayout title={SITE.title} description={SITE.description}>
   <div class="page">
     <section class="hero">
-      <h1>{SITE.title}</h1>
-      <p>{SITE.intro}</p>
+      <h1>{SITE.intro}</h1>
     </section>
 
     {categories.length > 0 && (
@@ -46,7 +45,6 @@ const categories = groupByCategory(posts).slice(0, 8);
 <style>
   .hero { padding-block: 5rem 2.5rem; max-width: var(--measure); }
   .hero h1 { font-size: var(--text-3xl); }
-  .hero p { margin-top: 1rem; color: var(--fg-muted); font-size: var(--text-lg); }
 
   .cats {
     display: flex;
