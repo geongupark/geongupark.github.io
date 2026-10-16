@@ -43,8 +43,16 @@ const categories = groupByCategory(posts).slice(0, 8);
 </BaseLayout>
 
 <style>
-  .hero { padding-block: 5rem 2.5rem; max-width: var(--measure); }
-  .hero h1 { font-size: var(--text-3xl); }
+  .hero { padding-block: 4rem 2.5rem; max-width: var(--measure); }
+
+  /* The tagline leads the page by size, not by weight: at 700 it shouted over
+     the post titles it introduces. Regular weight also makes the display
+     tracking unnecessary. */
+  .hero h1 {
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    letter-spacing: 0;
+  }
 
   .cats {
     display: flex;
