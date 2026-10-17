@@ -9,7 +9,7 @@ export const SITE = {
   wordmark: 'gus-commit',
   description: 'Notes on the things I learned.',
   /** The home page heading. */
-  intro: 'What gets you excited?',
+  intro: 'What gets you excited? :)',
   author: 'Geongu Park',
   locale: 'en-US',
   lang: 'en',

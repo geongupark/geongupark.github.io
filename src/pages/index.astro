@@ -43,14 +43,25 @@ const categories = groupByCategory(posts).slice(0, 8);
 </BaseLayout>
 
 <style>
-  .hero { padding-block: 5rem 2.5rem; max-width: var(--measure); }
-  .hero h1 { font-size: var(--text-3xl); }
+  .hero { padding-block: 4rem; max-width: var(--measure); }
+
+  /* The tagline is a signature, not the page's lead — the post list is. At the
+     same size as a post title it has to give up the ink too, or it loses a
+     same-weight-class fight it was never meant to be in. */
+  .hero h1 {
+    font-size: var(--text-xl);
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--fg-muted);
+  }
 
   .cats {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    padding-bottom: 2.5rem;
+    /* The quieter tagline needs room to read as an opening rather than as a
+       cramped first row of the list. */
+    padding-bottom: 3.5rem;
   }
   .cats a {
     display: inline-flex;
