@@ -9,6 +9,14 @@ tags:
 draft: true
 ---
 
+#### 1. X11
+* X11 : Graphics protocol
+* It consists of X Server + Window Manager
+> Client → (X Server + Window Manager) → Display Driver → H/W
+
+#### Wrap up : Linux Graphics Architecture
+* Basically, It is a client - server architecture
+
 ```
 [X11]
 Client → X Server ↔ WM/Compositor
